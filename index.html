@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Rhythm's Store</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+/* =========================
+   General Body & Typography
+========================= */
+body {
+    background: linear-gradient(135deg, #0d0d1a, #001f3f, #000814);
+    color: #e0e6f8;
+    font-family: 'Segoe UI', sans-serif;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    margin: 0;
+}
+
+/* =========================
+   Navbar
+========================= */
+.navbar{
+background:#070b1a;
+border-bottom:1px solid rgba(0,240,255,0.2);
+}
+
+.navbar-brand{
+font-weight:600;
+color:#00f0ff !important;
+letter-spacing:1px;
+}
+
+.nav-link{
+color:#d4e0ff !important;
+transition:0.3s;
+}
+
+.nav-link:hover{
+color:#00f0ff !important;
+}
+
+/* =========================
+   Hero Section
+========================= */
+.hero-section {
+    padding: 100px 20px 80px 20px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+.hero-title {
+    font-size: 3rem;
+    color: #00f0ff;
+    opacity: 0;
+    transform: translateY(-20px);
+    animation: fadeSlideDown 1.2s forwards;
+}
+.hero-subtitle {
+    font-size: 1.2rem;
+    color: #c0d8ff;
+    opacity: 0;
+    transform: translateY(-10px);
+    animation: fadeSlideDown 1.5s forwards;
+    animation-delay: 0.3s;
+}
+@keyframes fadeSlideDown {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* =========================
+   Section Titles
+========================= */
+.section-title {
+    border-left: 4px solid #00f0ff;
+    padding-left: 12px;
+    margin-bottom: 25px;
+    font-weight: 600;
+    font-size: 1.5rem;
+    color: #e0e6f8;
+}
+
+/* =========================
+   Song Cards
+========================= */
+.song-item {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: 0.5s ease-out;
+}
+.song-item.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+.card {
+    background: #0f1020;
+    border: none;
+    color: #e0e6f8;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
+}
+.card-title {
+    color: #f0faff;
+}
+.card-text {
+    color: #b0c4ff;
+    font-size: 0.9rem;
+}
+
+/* =========================
+   Artist Stats
+========================= */
+.stat-card {
+    background: #0f1020;
+    padding: 25px;
+    border-radius: 10px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    height: 100%;
+    text-align: center;
+}
+.stat-card h3 {
+    color: #00f0ff;
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+.stat-card h4 {
+    color: #00f0ff;
+    margin-bottom: 10px;
+}
+.stat-card p {
+    color: #c0d8ff;
+    font-size: 0.9rem;
+}
+.stat-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.6);
+}
+
+/* =========================
+   Floating Background Shapes
+========================= */
+.floating-shape {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background: rgba(0, 240, 255, 0.08);
+    border-radius: 50%;
+    animation: floating 12s infinite ease-in-out;
+}
+.shape1 { top: 15%; left: 75%; animation-delay: 0s; }
+.shape2 { top: 65%; left: 12%; animation-delay: 3s; }
+.shape3 { top: 35%; left: 45%; animation-delay: 1.5s; }
+.shape4 { top: 50%; left: 70%; animation-delay: 2.5s; }
+
+@keyframes floating {
+    0%, 100% { transform: translateY(0px) translateX(0px); }
+    50% { transform: translateY(-20px) translateX(20px); }
+}
+
+/* =========================
+   Floating Bubble Player (Centered)
+========================= */
+.bubble-player-center {
+    position: fixed;
+    bottom: 120px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, #001f3f, #000814);
+    padding: 18px 28px;
+    border-radius: 50px;
+    box-shadow: 0 10px 30px rgba(0, 240, 255, 0.4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-width: 320px;
+    max-width: 360px;
+    z-index: 1000;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.bubble-player-center:hover {
+    transform: translateX(-50%) translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 240, 255, 0.6);
+}
+.bubble-player-center .track-info {
+    color: #00f0ff;
+    font-size: 0.95rem;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+}
+.bubble-player-center audio {
+    width: 100%;
+    border-radius: 25px;
+    outline: none;
+    background: #001122;
+}
+
+/* =========================
+   Footer
+========================= */
+footer {
+    background: #0a0a1a;
+    color: #c0d8ff;
+    text-align: center;
+    padding: 20px 10px;
+    margin-top: 50px;
+}
+footer small {
+    color: #888fcf;
+}
+
+/* =========================
+   Utility Classes
+========================= */
+.genre-tag {
+    display: inline-block;
+    background: rgba(0, 240, 255, 0.2);
+    color: #00f0ff;
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-bottom: 5px;
+}
+</style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="#">The Rhythm's Store</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link text-light" href="/public/Exam Project/index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link text-light" href="/public/Exam Project/library.html">Library</a></li>
+        <li class="nav-item"><a class="nav-link text-light" href="/public/Exam Project/store.html">Store</a></li>
+        <li class="nav-item"><a class="nav-link text-light" href="/public/Exam Project/contactus.html">Contact Us</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Floating shapes -->
+<div class="floating-shape shape1"></div>
+<div class="floating-shape shape2"></div>
+<div class="floating-shape shape3"></div>
+<div class="floating-shape shape4"></div>
+
+<!-- Hero -->
+<section class="hero-section">
+    <h1 class="hero-title">🎵 The Rhythm's Store</h1>
+    <p class="hero-subtitle">Discover beats, classics & modern hits from your favorite artists</p>
+</section>
+
+<!-- Popular Independent & Indian Tracks -->
+<div class="container mt-5">
+<h2 class="section-title">Popular South Indian Tracks</h2>
+<div class="row g-4">
+  <!-- Track 1 -->
+  <div class="col-md-3 song-item">
+    <div class="card h-100">
+      <img src="images/bigdawgs.jpg" class="card-img-top">
+      <div class="card-body">
+        <h5 class="card-title">Aaya Sher (From "The Paradise")</h5>
+        <p class="card-text">Anirudh Ravichander, Kasarla Shyam</p>
+        <button class="btn btn-primary w-100 mb-2" onclick="playSample('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3','Big Dawgs - Hanumankind')">▶ Sample</button>
+        <button class="btn btn-success w-100">Buy</button>
+      </div>
+    </div>
+  </div>
+  <!-- Track 2 -->
+  <div class="col-md-3 song-item">
+    <div class="card h-100">
+      <img src="images/enjoy_enjaami.jpg" class="card-img-top">
+      <div class="card-body">
+        <h5 class="card-title">Vizhi Veekura</h5>
+        <p class="card-text">Sai Abhyankar, Sai Smriti</p>
+        <button class="btn btn-primary w-100 mb-2" onclick="playSample('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3','Vizhi Veekura - Sai Abhyankar, Sai Smriti')">▶ Sample</button>
+        <button class="btn btn-success w-100">Buy</button>
+      </div>
+    </div>
+  </div>
+  <!-- Track 3 -->
+  <div class="col-md-3 song-item">
+    <div class="card h-100">
+      <img src="images/moopilla.jpg" class="card-img-top">
+      <div class="card-body">
+        <h5 class="card-title">Monica (From "Coolie")</h5>
+        <p class="card-text">Anirudh Ravichander, Sublahshini</p>
+        <button class="btn btn-primary w-100 mb-2" onclick="playSample('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3','Monica - Anirudh Ravichander, Sublahshini')">▶ Sample</button>
+        <button class="btn btn-success w-100">Buy</button>
+      </div>
+    </div>
+  </div>
+  <!-- Track 4 -->
+  <div class="col-md-3 song-item">
+    <div class="card h-100">
+      <img src="images/single_pasanga.jpg" class="card-img-top">
+      <div class="card-body">
+        <h5 class="card-title">Vellake</h5>
+        <p class="card-text">Bharatt-Saurabh, Anirudh Ravichander</p>
+        <button class="btn btn-primary w-100 mb-2" onclick="playSample('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3','Vellake - Bharatt-Saurabh, Anirudh Ravichander')">▶ Sample</button>
+        <button class="btn btn-success w-100">Buy</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- Global Hits & Classics -->
+<div class="container mt-5">
+<h2 class="section-title">🌍 Global Hits & Classics</h2>
+<div class="row g-4">
+  <!-- Track 1 -->
+  <div class="col-md-3 song-item">
+    <div class="card h-100">
+      <img src="images/smooth_criminal.jpg" class="card-img-top">
+      <div class="card-body">
+        <h5 class="card-title">Smooth Criminal</h5>
+        <p class="card-text">Michael Jackson</p>
+        <button class="btn btn-primary w-100 mb-2" onclick="playSample('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3','Smooth Criminal - Michael Jackson')">▶ Sample</button>
+        <button class="btn btn-success w-100">Buy</button>
+      </div>
+    </div>
+  </div>
+  <!-- Track 2 -->
+  <div class="col-md-3 song-item">
+    <div class="card h-100">
+      <img src="images/lose_yourself.jpg" class="card-img-top">
+      <div class="card-body">
+        <h5 class="card-title">Without Me</h5>
+        <p class="card-text">Eminem</p>
+        <button class="btn btn-primary w-100 mb-2" onclick="playSample('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3','Lose Yourself - Eminem')">▶ Sample</button>
+        <button class="btn btn-success w-100">Buy</button>
+      </div>
+    </div>
+  </div>
+  <!-- Track 3 -->
+  <div class="col-md-3 song-item">
+    <div class="card h-100">
+      <img src="images/centuries.jpg" class="card-img-top">
+      <div class="card-body">
+        <h5 class="card-title">Centuries</h5>
+        <p class="card-text">Fall Out Boy</p>
+        <button class="btn btn-primary w-100 mb-2" onclick="playSample('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3','Centuries - Fall Out Boy')">▶ Sample</button>
+        <button class="btn btn-success w-100">Buy</button>
+      </div>
+    </div>
+  </div>
+  <!-- Track 4 -->
+  <div class="col-md-3 song-item">
+    <div class="card h-100">
+      <img src="images/youngblood.jpg" class="card-img-top">
+      <div class="card-body">
+        <h5 class="card-title">Teeth</h5>
+        <p class="card-text">5 Seconds of Summer</p>
+        <button class="btn btn-primary w-100 mb-2" onclick="playSample('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3','Youngblood - 5SOS')">▶ Sample</button>
+        <button class="btn btn-success w-100">Buy</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- Artist Stats -->
+<div class="container mt-5">
+<h2 class="section-title">📊 Artist Highlights</h2>
+<div class="row text-center g-4">
+  <div class="col-md-3">
+    <div class="stat-card">
+      <h4>After Hours Til Dawn</h4>
+      <p>Tour – October 2026<br>The Weeknd</p>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="stat-card">
+      <h3>1.7M+ & #2</h3>
+      <p>Streams - Aaya Sher, Spotify India<br>Anirudh Ravichander</p>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="stat-card">
+      <h3>2.3B+</h3>
+      <p>Streams – Without Me<br>Eminem</p>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="stat-card">
+      <h3>200+</h3>
+      <p>Streams - Dude Album, Spotify India<br>Sai Abhyankar</p>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- Sample Player -->
+<div class="bubble-player-center">
+  <div class="track-info">
+    <strong id="playing-track">No track playing</strong>
+  </div>
+  <audio id="audio-player" controls></audio>
+</div>
+
+<footer class="bg-dark text-light text-center py-4 mt-5">
+  <p>© 2026 The Rhythm's Store. All Rights Reserved.</p>
+  <small>Built with ❤️ & music vibes</small>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+// Scroll reveal
+const items = document.querySelectorAll('.song-item');
+window.addEventListener('scroll', () => {
+  const triggerBottom = window.innerHeight / 1.1;
+  items.forEach(item => {
+    const itemTop = item.getBoundingClientRect().top;
+    if(itemTop < triggerBottom){
+      item.classList.add('show');
+    }
+  });
+});
+
+// Sample Player
+const audio = document.getElementById('audio-player');
+const playingTrack = document.getElementById('playing-track');
+
+function playSample(src, title){
+    audio.src = src;
+    audio.play();
+    playingTrack.textContent = title;
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us - Song Library</title>
+
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+
+    body {
+      background: linear-gradient(135deg, #0d0d1a, #001f3f, #000814);
+      color: #e0e6f8;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      padding-top: 70px; 
+    }
+
+    /* ===== NAVBAR ===== */
+    .navbar {
+      background: #050a1c !important;
+      border-bottom: 1px solid rgba(80,120,255,0.2);
+    }
+
+    .navbar-brand {
+      color: #00f0ff !important;
+      font-weight: 600;
+    }
+
+    .nav-link {
+      color: #b7c9ff !important;
+    }
+
+    .nav-link:hover {
+      color: #00f0ff !important;
+    }
+
+    .section-title {
+      border-left: 4px solid #00f0ff;
+      padding-left: 12px;
+      margin: 40px 0 30px;
+      font-size: 1.6rem;
+    }
+
+    .contact-form {
+      background: #0f1020;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
+      max-width: 600px;
+      margin: auto;
+    }
+
+    .contact-form .form-label {
+      color: #9fb3ff;
+      font-weight: 500;
+    }
+
+    .contact-form .form-control {
+      background: #0b1024;
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      color: #e0e6f8;
+      border-radius: 8px;
+      padding: 10px;
+      width: 100%;
+      margin-bottom: 15px;
+      transition: 0.3s;
+      font-size: 1rem;
+    }
+
+.contact-form .form-control:focus {
+  outline: none;
+  border-color: #00f0ff;
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.6);
+  background: #0a0e22;
+  transform: scale(1.02);
+  transition: 0.3s ease, transform 0.3s ease;
+}
+
+
+.contact-form textarea.form-control:focus {
+  transform: scale(1.03);
+}
+
+.submit-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.submit-btn .spinner {
+  display: none;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 20px;
+  height: 20px;
+  border: 3px solid #fff;
+  border-top: 3px solid #00f0ff;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+
+.submit-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+
+    
+    .contact-info {
+      margin-top: 40px;
+      text-align: center;
+    }
+
+    .contact-info p {
+      color: #9fb3ff;
+      margin-bottom: 5px;
+      font-size: 0.95rem;
+    }
+
+    .contact-info a {
+      color: #00f0ff;
+      text-decoration: none;
+    }
+
+    .contact-info a:hover {
+      text-decoration: underline;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .contact-form {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">The Rhythm's Store</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link" href="/public/Exam Project/index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="/public/Exam Project/library.html">Library</a></li>
+          <li class="nav-item"><a class="nav-link" href="/public/Exam Project/store.html">Store</a></li>
+          <li class="nav-item"><a class="nav-link" href="/public/Exam Project/contactus.html">Contact Us</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- CONTACT US SECTION -->
+  <section class="container my-5">
+    <h2 class="section-title">Contact Us</h2>
+
+    <form class="contact-form" id="contactForm">
+      <label for="name" class="form-label">Name</label>
+      <input type="text" id="name" class="form-control" placeholder="Your Name" required>
+
+      <label for="email" class="form-label">Email</label>
+      <input type="email" id="email" class="form-control" placeholder="your@email.com" required>
+
+      <label for="subject" class="form-label">Subject</label>
+      <input type="text" id="subject" class="form-control" placeholder="Subject" required>
+
+      <label for="message" class="form-label">Message</label>
+      <textarea id="message" rows="5" class="form-control" placeholder="Type your message..." required></textarea>
+
+      <button type="submit" class="submit-btn">
+      <span class="btn-text">Send Message</span>
+      <div class="spinner"></div>
+      </button>
+    </form>
+
+    <div class="contact-info">
+      <p>Email: <a href="mailto:support@songlibrary.com">support@songlibrary.com</a></p>
+      <p>Phone: +91 12345 67890</p>
+      <p>Address: Bengaluru, India</p>
+    </div>
+  </section>
+
+  <footer class="bg-dark text-light text-center py-4 mt-5">
+  <p>© 2026 The Rhythm's Store. All Rights Reserved.</p>
+  <small>Built with ❤️ & music vibes</small>
+</footer>
+  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- ===== CUSTOM JS ===== -->
+  <script>
+    document.getElementById('contactForm').addEventListener('submit', function(e){
+  e.preventDefault();
+
+  const btn = this.querySelector('.submit-btn');
+  const spinner = btn.querySelector('.spinner');
+  const btnText = btn.querySelector('.btn-text');
+  const name = document.getElementById('name').value;
+
+  spinner.style.display = 'block';
+  btnText.style.opacity = '0';
+  btn.disabled = true;
+
+  setTimeout(() => {
+    spinner.style.display = 'none';
+    btnText.style.opacity = '1';
+    btn.disabled = false;
+
+    alert(`Thank you, ${name}! Your message has been sent.`);
+    this.reset();
+  }, 2000); 
+});
+  </script>
+
+</body>
+</html>

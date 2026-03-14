@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>The Rhythm's Store | Library</title>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+
+<style>
+
+/* PAGE */
+
+body {
+  background: linear-gradient(135deg, #0d0d1a, #001f3f, #000814);
+  color: #e0e6f8;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* NAVBAR */
+
+.navbar {
+  background: #070b1a;
+  border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+}
+
+.navbar-brand {
+  color: #00f0ff !important;
+  font-weight: 600;
+}
+
+/* TITLES */
+
+.section-title {
+  border-left: 4px solid #00f0ff;
+  padding-top: 15px;
+  padding-left: 12px;
+  margin-bottom: 25px;
+  font-size: 1.6rem;
+}
+
+/* SEARCH */
+
+.library-search {
+  background: #0b1024;
+  border: 1px solid rgba(0, 240, 255, 0.3);
+  color: white;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.library-search:focus {
+  outline: none;
+  border-color: #00f0ff;
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
+}
+
+/* FILTER BAR */
+
+.filter-bar {
+  margin-top: 20px;
+}
+
+.filter-btn {
+  background: #0f1020;
+  border: 1px solid rgba(0, 240, 255, 0.3);
+  color: #cde0ff;
+  padding: 6px 14px;
+  border-radius: 20px;
+  margin: 5px;
+  cursor: pointer;
+  transition: .3s;
+}
+
+.filter-btn:hover {
+  background: #00f0ff;
+  color: black;
+}
+
+/* ROW FIX */
+
+.row {
+  display: flex;
+  flex-wrap: wrap;       /* allow wrapping */
+  align-items: stretch;  /* uniform height */
+  gap: 16px;             /* spacing between cards */
+}
+
+/* SONG CARD FIX */
+
+.song-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 calc(25% - 16px); /* 4 cards per row accounting for gap */
+  box-sizing: border-box;
+  margin-bottom: 16px;
+}
+
+/* Card content */
+
+.song-card .card {
+  background: #0f1020;
+  border: none;
+  border-radius: 12px;
+  padding: 14px;
+  transition: .3s;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%; /* stretch to fill card */
+}
+
+/* Hover animation */
+
+.song-card .card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 0 16px rgba(0, 240, 255, 0.4);
+}
+
+/* Title */
+
+.card-title {
+  color: #f2f6ff;
+  font-size: 1rem;
+  line-height: 1.3;
+  min-height: 42px;
+}
+
+/* Artist */
+
+.card-text {
+  color: #9fb3ff;
+  font-size: .85rem;
+  margin-bottom: 6px;
+}
+
+/* GENRE TAG */
+
+.genre-tag {
+  background: rgba(0, 240, 255, 0.2);
+  color: #00f0ff;
+  font-size: .7rem;
+  padding: 3px 6px;
+  border-radius: 4px;
+}
+
+/* RANK BADGE */
+
+.rank-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  font-size: .75rem;
+  padding: 3px 6px;
+  border-radius: 5px;
+  color: white;
+  background: linear-gradient(135deg, #00e5ff, #0078ff);
+}
+
+.rank-1 { background: linear-gradient(135deg, #ffd700, #ff9f00); }
+.rank-2 { background: linear-gradient(135deg, #e3ebff, #7a92c7); }
+.rank-3 { background: linear-gradient(135deg, #ffb16e, #ff6a00); }
+
+/* PLAY ICON */
+
+.play-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 28px;
+  color: white;
+  opacity: 0;
+  transition: .3s;
+}
+
+.song-card:hover .play-overlay {
+  opacity: 1;
+}
+
+/* FOOTER */
+
+footer {
+  margin-top: 60px;
+  background: #070b1a;
+  padding: 25px;
+  text-align: center;
+  border-top: 1px solid rgba(0, 240, 255, 0.2);
+}
+
+/* ===== CHART PERFORMANCE ===== */
+
+.chart-performance {
+  margin-top: 80px;
+  margin-bottom: 80px;
+}
+
+.chart-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #0e1324;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 25px rgba(40, 90, 255, 0.2);
+}
+
+.chart-table th {
+  background: linear-gradient(90deg, #16224a, #0c1330);
+  color: #7aa8ff;
+  padding: 14px;
+  font-size: 14px;
+  text-align: left;
+  letter-spacing: 1px;
+}
+
+.chart-table td {
+  padding: 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: #d0d6ff;
+  font-size: 14px;
+}
+
+.chart-table tr:hover {
+  background: rgba(40, 90, 255, 0.08);
+}
+
+/* Performance bar */
+
+.chart-bar {
+  height: 6px;
+  background: #1c2447;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.chart-bar span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #2d7bff, #6aa6ff);
+  box-shadow: 0 0 10px rgba(90, 150, 255, 0.8);
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+<!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="#">The Rhythm's Store</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link text-light" href="/public/Exam Project/index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link text-light" href="/public/Exam Project/library.html">Library</a></li>
+        <li class="nav-item"><a class="nav-link text-light" href="/public/Exam Project/store.html">Store</a></li>
+        <li class="nav-item"><a class="nav-link text-light" href="#">Contact Us</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+
+<!-- SEARCH + FILTER -->
+
+<section class="container my-5">
+
+<h2 class="section-title">Search the Library</h2>
+
+<input
+type="text"
+id="searchBar"
+class="form-control library-search"
+placeholder="Search songs or artists..."
+onkeyup="searchSongs()">
+
+
+<div class="filter-bar text-center">
+
+<button class="filter-btn" onclick="filterGenre('all')">All</button>
+<button class="filter-btn" onclick="filterGenre('Tamil')">Tamil</button>
+<button class="filter-btn" onclick="filterGenre('Telugu')">Telugu</button>
+<button class="filter-btn" onclick="filterGenre('Indie')">Indie</button>
+<button class="filter-btn" onclick="filterGenre('Pop')">Pop</button>
+<button class="filter-btn" onclick="filterGenre('Rock')">Rock</button>
+<button class="filter-btn" onclick="filterGenre('EDM')">EDM</button>
+<button class="filter-btn" onclick="filterGenre('Hip Hop')">Hip Hop</button>
+
+</div>
+
+</section>
+
+
+
+<!-- SOUTH INDIAN CHARTS -->
+<section class="container my-5">
+  <h2 class="section-title">Top Songs</h2>
+  <div class="row g-4">
+
+    <div class="song-card Tamil">
+      <div class="rank-badge rank-1">#1</div>
+      <div class="play-overlay">▶</div>
+      <div class="card">
+        <h5 class="card-title">Arabic Kuthu</h5>
+        <p class="card-text">Anirudh Ravichander</p>
+        <span class="genre-tag">Tamil</span>
+      </div>
+    </div>
+
+    <div class="song-card Telugu">
+      <div class="rank-badge rank-2">#2</div>
+      <div class="play-overlay">▶</div>
+      <div class="card">
+        <h5 class="card-title">Oo Antava</h5>
+        <p class="card-text">Devi Sri Prasad</p>
+        <span class="genre-tag">Telugu</span>
+      </div>
+    </div>
+
+    <div class="song-card Tamil">
+      <div class="rank-badge rank-3">#3</div>
+      <div class="play-overlay">▶</div>
+      <div class="card">
+        <h5 class="card-title">Vaathi Coming</h5>
+        <p class="card-text">Anirudh Ravichander</p>
+        <span class="genre-tag">Tamil</span>
+      </div>
+    </div>
+
+    <div class="song-card Telugu">
+      <div class="rank-badge">#4</div>
+      <div class="play-overlay">▶</div>
+      <div class="card">
+        <h5 class="card-title">Uppenantha</h5>
+        <p class="card-text">Devi Sri Prasad</p>
+        <span class="genre-tag">Telugu</span>
+      </div>
+    </div>
+
+    <div class="song-card Telugu">
+      <div class="rank-badge">#5</div>
+      <div class="play-overlay">▶</div>
+      <div class="card">
+        <h5 class="card-title">Naatu Naatu</h5>
+        <p class="card-text">MM Keeravani</p>
+        <span class="genre-tag">Telugu</span>
+      </div>
+    </div>
+
+    <div class="song-card Tamil">
+      <div class="rank-badge">#6</div>
+      <div class="play-overlay">▶</div>
+      <div class="card">
+        <h5 class="card-title">Hukum</h5>
+        <p class="card-text">Anirudh Ravichander</p>
+        <span class="genre-tag">Tamil</span>
+      </div>
+    </div>
+
+    <div class="song-card Telugu">
+      <div class="rank-badge">#7</div>
+      <div class="play-overlay">▶</div>
+      <div class="card">
+        <h5 class="card-title">Ranjithame</h5>
+        <p class="card-text">Thaman S</p>
+        <span class="genre-tag">Telugu</span>
+      </div>
+    </div>
+
+    <div class="song-card Tamil">
+      <div class="rank-badge">#8</div>
+      <div class="play-overlay">▶</div>
+      <div class="card">
+        <h5 class="card-title">Beast Mode</h5>
+        <p class="card-text">Anirudh Ravichander</p>
+        <span class="genre-tag">Tamil</span>
+      </div>
+    </div>
+
+    <div class="song-card Telugu">
+      <div class="rank-badge">#9</div>
+      <div class="play-overlay">▶</div>
+      <div class="card">
+        <h5 class="card-title">My Love is Gone</h5>
+        <p class="card-text">Devi Sri Prasad</p>
+        <span class="genre-tag">Telugu</span>
+      </div>
+    </div>
+
+    <div class="song-card Tamil">
+      <div class="rank-badge">#10</div>
+      <div class="play-overlay">▶</div>
+      <div class="card">
+        <h5 class="card-title">Why This Kolaveri Di</h5>
+        <p class="card-text">Anirudh Ravichander</p>
+        <span class="genre-tag">Tamil</span>
+      </div>
+    </div>
+
+    <div class="song-card Telugu">
+      <div class="rank-badge">#11</div>
+      <div class="play-overlay">▶</div>
+      <div class="card">
+        <h5 class="card-title">Samajavaragamana</h5>
+        <p class="card-text">Thaman S</p>
+        <span class="genre-tag">Telugu</span>
+      </div>
+    </div>
+
+    <div class="song-card Tamil">
+      <div class="rank-badge">#12</div>
+      <div class="play-overlay">▶</div>
+      <div class="card">
+        <h5 class="card-title">Adiye</h5>
+        <p class="card-text">G.V Prakash Kumar</p>
+        <span class="genre-tag">Tamil</span>
+      </div>
+    </div>
+
+    <div class="song-card Telugu">
+      <div class="rank-badge">#13</div>
+      <div class="play-overlay">▶</div>
+      <div class="card">
+        <h5 class="card-title">Athiloka Sundari</h5>
+        <p class="card-text">Thaman S</p>
+        <span class="genre-tag">Telugu</span>
+      </div>
+    </div>
+
+    <div class="song-card Tamil">
+      <div class="rank-badge">#14</div>
+      <div class="play-overlay">▶</div>
+      <div class="card">
+        <h5 class="card-title">Enakena Yaarum Ilaye</h5>
+        <p class="card-text">Anirudh Ravichander</p>
+        <span class="genre-tag">Tamil</span>
+      </div>
+    </div>
+
+    <div class="song-card Telugu">
+      <div class="rank-badge">#15</div>
+      <div class="play-overlay">▶</div>
+      <div class="card">
+        <h5 class="card-title">Telisiney Na Nuvvey</h5>
+        <p class="card-text">Revanth</p>
+        <span class="genre-tag">Telugu</span>
+      </div>
+    </div>
+
+    <div class="song-card Tamil">
+      <div class="rank-badge">#16</div>
+      <div class="play-overlay">▶</div>
+      <div class="card">
+        <h5 class="card-title">Azhage</h5>
+        <p class="card-text">Hip Hop Thamizha</p>
+        <span class="genre-tag">Tamil</span>
+      </div>
+    </div>
+
+  </div> <!-- END ROW -->
+</section>
+
+
+<!-- INTERNATIONAL CHARTS -->
+
+<section class="container my-5">
+  <h2 class="section-title">International Charts</h2>
+  <div class="row g-4">
+
+    <div class="song-card Pop">
+      <div class="rank-badge rank-1">#1</div>
+      <div class="play-overlay">▶</div>
+      <div class="card">
+        <h5 class="card-title">Blinding Lights</h5>
+        <p class="card-text">The Weeknd</p>
+        <span class="genre-tag">Pop</span>
+      </div>
+    </div>
+
+    <div class="song-card Rock">
+      <div class="rank-badge rank-2">#2</div>
+      <div class="play-overlay">▶</div>
+      <div class="card">
+        <h5 class="card-title">Believer</h5>
+        <p class="card-text">Imagine Dragons</p>
+        <span class="genre-tag">Rock</span>
+      </div>
+    </div>
+
+    <div class="song-card EDM">
+      <div class="rank-badge rank-3">#3</div>
+      <div class="play-overlay">▶</div>
+      <div class="card">
+        <h5 class="card-title">Faded</h5>
+        <p class="card-text">Alan Walker</p>
+        <span class="genre-tag">EDM</span>
+      </div>
+    </div>
+
+    <div class="song-card Rock">
+      <div class="rank-badge">#4</div>
+      <div class="play-overlay">▶</div>
+      <div class="card">
+        <h5 class="card-title">Centuries</h5>
+        <p class="card-text">Fall Out Boy</p>
+        <span class="genre-tag">Rock</span>
+      </div>
+    </div>
+
+    <div class="song-card Pop">
+      <div class="rank-badge">#5</div>
+      <div class="play-overlay">▶</div>
+      <div class="card">
+        <h5 class="card-title">Youngblood</h5>
+        <p class="card-text">5SOS</p>
+        <span class="genre-tag">Pop</span>
+      </div>
+    </div>
+
+    <div class="song-card Pop">
+      <div class="rank-badge">#6</div>
+      <div class="play-overlay">▶</div>
+      <div class="card">
+        <h5 class="card-title">Thriller</h5>
+        <p class="card-text">Michael Jackson</p>
+        <span class="genre-tag">Pop</span>
+      </div>
+    </div>
+
+    <div class="song-card HipHop">
+      <div class="rank-badge">#7</div>
+      <div class="play-overlay">▶</div>
+      <div class="card">
+        <h5 class="card-title">Without Me</h5>
+        <p class="card-text">Eminem</p>
+        <span class="genre-tag">Hip Hop</span>
+      </div>
+    </div>
+
+    <div class="song-card Rock">
+      <div class="rank-badge">#8</div>
+      <div class="play-overlay">▶</div>
+      <div class="card">
+        <h5 class="card-title">Smells Like Teen Spirit</h5>
+        <p class="card-text">Nirvana</p>
+        <span class="genre-tag">Rock</span>
+      </div>
+    </div>
+
+    <div class="song-card Pop">
+      <div class="rank-badge">#9</div>
+      <div class="play-overlay">▶</div>
+      <div class="card">
+        <h5 class="card-title">Starboy</h5>
+        <p class="card-text">The Weeknd</p>
+        <span class="genre-tag">Pop</span>
+      </div>
+    </div>
+
+    <div class="song-card Rock">
+      <div class="rank-badge">#10</div>
+      <div class="play-overlay">▶</div>
+      <div class="card">
+        <h5 class="card-title">Immortals</h5>
+        <p class="card-text">Fall Out Boy</p>
+        <span class="genre-tag">Rock</span>
+      </div>
+    </div>
+
+    <div class="song-card EDM">
+      <div class="rank-badge">#11</div>
+      <div class="play-overlay">▶</div>
+      <div class="card">
+        <h5 class="card-title">Alone</h5>
+        <p class="card-text">Alan Walker</p>
+        <span class="genre-tag">EDM</span>
+      </div>
+    </div>
+
+    <div class="song-card Rock">
+      <div class="rank-badge">#12</div>
+      <div class="play-overlay">▶</div>
+      <div class="card">
+        <h5 class="card-title">Radioactive</h5>
+        <p class="card-text">Imagine Dragons</p>
+        <span class="genre-tag">Rock</span>
+      </div>
+    </div>
+
+    <div class="song-card Pop">
+      <div class="rank-badge">#13</div>
+      <div class="play-overlay">▶</div>
+      <div class="card">
+        <h5 class="card-title">Bad</h5>
+        <p class="card-text">Michael Jackson</p>
+        <span class="genre-tag">Pop</span>
+      </div>
+    </div>
+
+    <div class="song-card HipHop">
+      <div class="rank-badge">#14</div>
+      <div class="play-overlay">▶</div>
+      <div class="card">
+        <h5 class="card-title">Lose Yourself</h5>
+        <p class="card-text">Eminem</p>
+        <span class="genre-tag">Hip Hop</span>
+      </div>
+    </div>
+
+    <div class="song-card Pop">
+      <div class="rank-badge">#15</div>
+      <div class="play-overlay">▶</div>
+      <div class="card">
+        <h5 class="card-title">Ghost of You</h5>
+        <p class="card-text">5 Seconds of Summer</p>
+        <span class="genre-tag">Pop</span>
+      </div>
+    </div>
+
+    <div class="song-card Rock">
+      <div class="rank-badge">#16</div>
+      <div class="play-overlay">▶</div>
+      <div class="card">
+        <h5 class="card-title">Bring Me to Life</h5>
+        <p class="card-text">Evanescence</p>
+        <span class="genre-tag">Rock</span>
+      </div>
+    </div>
+
+  </div> <!-- END ROW -->
+</section>
+<!-- ================= CHART PERFORMANCE ================= -->
+
+<section class="container chart-performance">
+
+<h2 class="section-title">Chart Performance</h2>
+
+<table class="chart-table">
+
+<thead>
+<tr>
+<th>#</th>
+<th>Track</th>
+<th>Artist</th>
+<th>Peak</th>
+<th>Weeks</th>
+<th>Streams</th>
+<th>Performance</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td>1</td>
+<td>Arabic Kuthu</td>
+<td>Anirudh Ravichander</td>
+<td>#1</td>
+<td>18</td>
+<td>320M</td>
+<td>
+<div class="chart-bar">
+<span style="width:95%"></span>
+</div>
+</td>
+</tr>
+
+<tr>
+<td>2</td>
+<td>Uppenantha</td>
+<td>Devi Sri Prasad</td>
+<td>#2</td>
+<td>14</td>
+<td>210M</td>
+<td>
+<div class="chart-bar">
+<span style="width:85%"></span>
+</div>
+</td>
+</tr>
+
+<tr>
+<td>3</td>
+<td>Believer</td>
+<td>Imagine Dragons</td>
+<td>#1</td>
+<td>32</td>
+<td>1.1B</td>
+<td>
+<div class="chart-bar">
+<span style="width:100%"></span>
+</div>
+</td>
+</tr>
+
+<tr>
+<td>4</td>
+<td>Faded</td>
+<td>Alan Walker</td>
+<td>#1</td>
+<td>40</td>
+<td>3.2B</td>
+<td>
+<div class="chart-bar">
+<span style="width:98%"></span>
+</div>
+</td>
+</tr>
+
+<tr>
+<td>5</td>
+<td>Without Me</td>
+<td>Eminem</td>
+<td>#2</td>
+<td>26</td>
+<td>1.5B</td>
+<td>
+<div class="chart-bar">
+<span style="width:90%"></span>
+</div>
+</td>
+</tr>
+
+<tr>
+<td>6</td>
+<td>Blinding Lights</td>
+<td>The Weeknd</td>
+<td>#1</td>
+<td>52</td>
+<td>4B</td>
+<td>
+<div class="chart-bar">
+<span style="width:100%"></span>
+</div>
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</section>
+
+
+<footer class="bg-dark text-light text-center py-4 mt-5">
+  <p>© 2026 The Rhythm's Store. All Rights Reserved.</p>
+  <small>Built with ❤️ & music vibes</small>
+</footer>
+
+
+
+<script>
+
+/* SEARCH */
+
+function searchSongs(){
+
+let input=document.getElementById("searchBar").value.toLowerCase()
+
+let songs=document.getElementsByClassName("song-card")
+
+for(let i=0;i<songs.length;i++){
+
+let text=songs[i].innerText.toLowerCase()
+
+songs[i].style.display=text.includes(input) ? "block" : "none"
+
+}
+
+}
+
+/* FILTER */
+
+function filterGenre(genre){
+
+let songs=document.getElementsByClassName("song-card")
+
+for(let i=0;i<songs.length;i++){
+
+if(genre=="all")
+songs[i].style.display="block"
+
+else if(songs[i].classList.contains(genre))
+songs[i].style.display="block"
+
+else
+songs[i].style.display="none"
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
